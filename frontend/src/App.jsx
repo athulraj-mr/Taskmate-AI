@@ -28,6 +28,8 @@ function App() {
   };
 
   const handleEditTask = (task)=> { 
+    if (!task || !task.id) return alert("Invalid Task");
+
     const newTitle = prompt("New title", task.title);
     if (newTitle !== null && newTitle.trim() !== "") {
       dispatch(editTask({
@@ -41,6 +43,8 @@ function App() {
   };
 
   const handleToggleComplete = (task) => {
+    if (!task || !task.id) return alert("Invalid Task");
+
     dispatch(editTask({
       id: task.id,
       updatedData: {

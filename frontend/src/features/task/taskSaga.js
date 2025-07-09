@@ -32,7 +32,7 @@ function* updateTaskWorker(action) {
     const response = yield call(() =>
       axios.put(`http://127.0.0.1:8000/tasks/${id}`, updatedData)
     );
-    yield put(updateTask(response.data.task));
+    yield put(updateTask(response.data));
   } catch (error) {
     console.error("Update failed:", error);
   }
