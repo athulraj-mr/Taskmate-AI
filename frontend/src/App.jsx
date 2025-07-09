@@ -61,21 +61,21 @@ function App() {
   };
 
   return (
-    <div className="p-5 m-12 max-w-2xl mx-auto bg-[#f1faee] shadow-2xl">
+    <div className="p-5 m-12 max-w-3xl mx-auto bg-[#f2fdf2] shadow-2xl">
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold mb-4">TaskMate AI</h1>
         <div className="flex gap-2 mb-4">
           <button onClick={() => setFilter("all")} 
-            className="px-2 py-1 rounded bg-[#6565f8] text-white">
-            All
+            className={`px-2 py-1 hover:bg-[#8b84eb] rounded text-white ${loading ? "bg-gray-400" : "bg-[#5639fa]"}`}>
+            {loading ? "loading..." : "All"}
           </button>
           <button onClick={() => setFilter("completed")} 
-            className="px-2 py-1 rounded bg-[#24ce24] text-white">
-            Completed
+            className={`px-2 py-1 hover:bg-[#83ec83] rounded text-white ${loading ? "bg-gray-400" : "bg-[#24ce24]"}`}>
+            {loading ? "loading..." : "Completed"}
           </button>
-          <button onClick={() => setFilter("incomplete")} 
-            className="px-2 py-1 rounded bg-[#da34da] text-white">
-            Incomplete
+          <button onClick={() => setFilter("incomplete")}
+            className={`px-2 py-1 hover:bg-[#eb84e6] rounded text-white ${loading ? "bg-gray-400" : "bg-[#da34da]"}`}>
+            {loading ? "loading..." : "Incomplete"}
           </button>
         </div>
       </div>
@@ -87,8 +87,11 @@ function App() {
           placeholder="Enter task"
           className="border rounded px-2 w-full"
         />
-        <button onClick={handleAddTask} className="bg-blue-500 text-white px-4 py-1 rounded">
-          Add
+        <button 
+          onClick={handleAddTask} 
+          className={`px-4 py-1 rounded w-34 text-white hover:bg-[#0000ff] 
+            ${loading ? "bg-gray-400" : "bg-[#3939fa]"}`}>
+          {loading ? "Adding..." : "Add"}
         </button>
       </div>
       <div>
@@ -98,7 +101,10 @@ function App() {
       </div>
 
       {loading ? (
-        <p>Loading...</p>
+        <div className="flex justify-center items-center py-4">
+          <div className="w-8 h-8 border-4 border-blue-300 border-t-blue-600 rounded-full 
+            animate-spin"></div>
+        </div>
       ) : (
         filteredTasks.map((task) => (
           <div key={task.id} className={`p-2 rounded shadow mb-2 flex justify-between
@@ -108,18 +114,18 @@ function App() {
               <button 
                 onClick={()=> handleToggleComplete(task)}
                 className={`bg-[#45d421] text-white px-2 py-1 rounded 
-                  ${task.completed ? "bg-[#54cc2c]" : "bg-[#da34da]"}`}>
+                  ${task.completed ? "bg-[#54cc2c] hover:bg-[#84eb89]" : "bg-[#da34da] hover:bg-[#eb84d5]"}`}>
                   {task.completed ? "Completed" : "Not Complete"}
               </button>
               <button
                 onClick={() => handleEditTask(task)}
-                className="bg-[#0c91b9] text-white px-2 py-1 rounded">
-                Edit
+                className={`px-2 py-1 hover:bg-[#84d3eb] rounded text-white ${loading ? "bg-gray-400" : "bg-[#0c91b9]"}`}>
+                {loading ? "loading..." : "Edit"}
               </button>
               <button
                 onClick={() => handleDeleteTask(task.id)}
-                className="bg-[#fd4040] text-white px-2 py-1 rounded">
-                Delete
+                className={`px-2 py-1 hover:bg-[#eb8484] rounded text-white ${loading ? "bg-gray-400" : "bg-[#fd4040]"}`}>
+                {loading ? "loading..." : "Delete"}
               </button>
             </div>
           </div>
