@@ -4,7 +4,7 @@ import { fetchTasks, createTask, editTask, deleteTask } from "./features/task/ta
 
 function App() {
   const dispatch = useDispatch();
-  const { tasks = [], loading } = useSelector((state) => state.task);
+  const { tasks = [], loading, error } = useSelector((state) => state.task);
   const [title, setTitle] = useState("");
   const [filter, setFilter] = useState("all");
 
@@ -64,6 +64,7 @@ function App() {
     <div className="p-5 m-12 max-w-3xl mx-auto bg-[#f2fdf2] shadow-2xl">
       <div className="flex justify-between">
         <h1 className="text-3xl font-bold mb-4">TaskMate AI</h1>
+
         <div className="flex gap-2 mb-4">
           <button onClick={() => setFilter("all")} 
             className={`px-2 py-1 hover:bg-[#8b84eb] rounded text-white ${loading ? "bg-gray-400" : "bg-[#5639fa]"}`}>
@@ -79,6 +80,7 @@ function App() {
           </button>
         </div>
       </div>
+      
       <div className="flex gap-2 pt-3 pb-2">
         <input
           type="text"
@@ -94,11 +96,18 @@ function App() {
           {loading ? "Adding..." : "Add"}
         </button>
       </div>
+
       <div>
         <p className="mb-2 ml-1 font-semibold">
           #{tasks.filter(task => !task.completed).length} Tasks Remaining
         </p>
       </div>
+
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+        {error}
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center items-center py-4">
