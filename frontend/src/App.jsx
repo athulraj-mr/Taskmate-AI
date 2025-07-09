@@ -9,6 +9,7 @@ function App() {
   const { tasks = [], loading, error } = useSelector((state) => state.task);
   const [title, setTitle] = useState("");
   const [filter, setFilter] = useState("all");
+  const [priority, setPriority] = useState("Low");
 
 
   useEffect(() => {
@@ -24,9 +25,10 @@ function App() {
 
   const handleAddTask = () => {
     if (title.trim() !== "") {
-      dispatch(createTask({ title, completed: false }));
+      dispatch(createTask({ title, completed: false, priority }));
       toast.success("Task added successfully!");
       setTitle("");
+      setPriority("Low");
     } else {
       toast.error("Task title cannot be empty");
     }
@@ -94,6 +96,14 @@ function App() {
           placeholder="Enter task"
           className="border rounded px-2 w-full"
         />
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value)}
+          className="border rounded px-1 w-16">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
         <button 
           onClick={handleAddTask} 
           className={`px-4 py-1 rounded w-34 text-white hover:bg-[#0000ff] 
@@ -122,7 +132,8 @@ function App() {
       ) : (
         filteredTasks.map((task) => (
           <div key={task.id} className={`p-2 rounded shadow mb-2 flex justify-between
-            ${task.completed ? "bg-[#f1faee]" : "bg-white"}`}>
+            ${task.priority === "High" ? "text-red-500" : 
+              task.priority === "Medium" ? "text-[#1c90dd]" : "text-black"}`}>
             {task.title}
             <div className="flex gap-2">
               <button 
