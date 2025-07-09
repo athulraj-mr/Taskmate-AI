@@ -1,5 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import axios from "axios";
+import { toast } from 'react-toastify';
 import { fetchTasks, setTasks, createTask, addTask, updateTask, editTask,
   deleteTask, deleteTaskFromState, setError
  } from "./taskSlice";
@@ -12,8 +13,7 @@ function* fetchTasksWorker() {
     );
     yield put(setTasks(response.data));
   } catch (error) {
-    console.error("Failed to fetch tasks:", error);
-    yield put(setError("Failed to fetch tasks"));
+    toast.error("Failed to fetch tasks");
   }
 }
 

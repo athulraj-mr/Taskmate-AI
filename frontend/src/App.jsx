@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { fetchTasks, createTask, editTask, deleteTask } from "./features/task/taskSlice";
 
 function App() {
@@ -23,13 +25,14 @@ function App() {
   const handleAddTask = () => {
     if (title.trim() !== "") {
       dispatch(createTask({ title, completed: false }));
+      toast.success("Task added successfully!");
       setTitle("");
+    } else {
+      toast.error("Task title cannot be empty");
     }
   };
 
   const handleEditTask = (task)=> { 
-    if (!task || !task.id) return alert("Invalid Task");
-
     const newTitle = prompt("New title", task.title);
     if (newTitle !== null && newTitle.trim() !== "") {
       dispatch(editTask({
@@ -39,12 +42,13 @@ function App() {
           completed: task.completed,
         }
       }));
+      toast.success("Task edited successfully!");
+    } else {
+      toast.error("Title cannot be empty");
     }
   };
 
   const handleToggleComplete = (task) => {
-    if (!task || !task.id) return alert("Invalid Task");
-
     dispatch(editTask({
       id: task.id,
       updatedData: {
@@ -57,6 +61,7 @@ function App() {
   const handleDeleteTask = (taskId) => {
     if (window.confirm("Are you sure you want to delete this task?")) {
     dispatch(deleteTask(taskId));
+    toast.success("Task deleted!");
     }
   };
 
@@ -67,20 +72,20 @@ function App() {
 
         <div className="flex gap-2 mb-4">
           <button onClick={() => setFilter("all")} 
-            className={`px-2 py-1 hover:bg-[#8b84eb] rounded text-white ${loading ? "bg-gray-400" : "bg-[#5639fa]"}`}>
-            {loading ? "loading..." : "All"}
+            className="px-2 py-1 hover:bg-[#8b84eb] rounded text-white bg-[#5639fa]">
+            {loading ? "Loading..." : "All"}
           </button>
           <button onClick={() => setFilter("completed")} 
-            className={`px-2 py-1 hover:bg-[#83ec83] rounded text-white ${loading ? "bg-gray-400" : "bg-[#24ce24]"}`}>
-            {loading ? "loading..." : "Completed"}
+            className="px-2 py-1 hover:bg-[#83ec83] rounded text-white bg-[#24ce24]">
+            {loading ? "Loading..." : "Completed"}
           </button>
           <button onClick={() => setFilter("incomplete")}
-            className={`px-2 py-1 hover:bg-[#eb84e6] rounded text-white ${loading ? "bg-gray-400" : "bg-[#da34da]"}`}>
+            className="px-2 py-1 hover:bg-[#eb84e6] rounded text-white bg-[#da34da]">
             {loading ? "loading..." : "Incomplete"}
           </button>
         </div>
       </div>
-      
+
       <div className="flex gap-2 pt-3 pb-2">
         <input
           type="text"
@@ -140,6 +145,7 @@ function App() {
           </div>
         ))
       )}
+      <ToastContainer position="top-right" autoClose={3000} theme="light" newestOnTop />
     </div>
   );
 }
